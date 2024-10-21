@@ -13,4 +13,12 @@ public interface ProductService {
 
     public List<Product> getAllProductsInCategory(String category);
 
+    public Product createNewProduct(Product product);
+
+    public Product updateProductById(Long id, Product product);
+
+    public Product replaceProductById(Long id, Product product);
+
+    public Product deleteProductById(Long id);
+
 }
