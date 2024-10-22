@@ -1,6 +1,7 @@
 package org.scaler.productmicroservice.controllers;
 
 
+import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Product;
 import org.scaler.productmicroservice.services.FakeStoreProductService;
 import org.scaler.productmicroservice.services.ProductService;
@@ -25,39 +26,39 @@ public class ProductController {
 
 
     @RequestMapping("/{id}")
-    public Product getProductById(@PathVariable("id") Long id){
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
         return productService.getProductById(id);
     }
 
     @RequestMapping("/")
-    public List<Product> getAllProducts(){
+    public ResponseEntity<List<Product>> getAllProducts(){
         return productService.getAllProducts();
     }
 
     @RequestMapping("/category/{name}")
-    public List<Product> getAllProductsInCategory(@PathVariable("name") String name){
+    public ResponseEntity<List<Product>> getAllProductsInCategory(@PathVariable("name") String name){
         return productService.getAllProductsInCategory(name);
     }
 
     @PostMapping("/")
-    public Product createNewProduct(@RequestBody Product product){
+    public ResponseEntity<Product> createNewProduct(@RequestBody Product product){
         return productService.createNewProduct(product);
     }
 
 
     @PatchMapping("/{id}")
-    public Product updateProductById(@PathVariable("id") Long id, @RequestBody Product product){
+    public ResponseEntity<Product> updateProductById(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException{
         return productService.updateProductById(id, product);
 
     }
 
     @PutMapping("/{id}")
-    public Product replaceProductById(@PathVariable("id") Long id, @RequestBody Product product){
+    public ResponseEntity<Product> replaceProductById(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException{
         return productService.replaceProductById(id, product);
     }
 
     @DeleteMapping("/{id}")
-    public Product deleteProductById(@PathVariable("id") Long id){
+    public ResponseEntity<Product> deleteProductById(@PathVariable("id") Long id) throws ProductNotFoundException{
         return productService.deleteProductById(id);
     }
 

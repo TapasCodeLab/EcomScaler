@@ -1,24 +1,26 @@
 package org.scaler.productmicroservice.services;
 
+import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Category;
 import org.scaler.productmicroservice.models.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 public interface ProductService {
 
-    public Product getProductById(Long id);
+    public ResponseEntity<Product> getProductById(Long id) throws ProductNotFoundException;
 
-    public List<Product> getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts();
 
-    public List<Product> getAllProductsInCategory(String category);
+    public ResponseEntity<List<Product>> getAllProductsInCategory(String category);
 
-    public Product createNewProduct(Product product);
+    public ResponseEntity<Product> createNewProduct(Product product);
 
-    public Product updateProductById(Long id, Product product);
+    public ResponseEntity<Product> updateProductById(Long id, Product product) throws ProductNotFoundException;
 
-    public Product replaceProductById(Long id, Product product);
+    public ResponseEntity<Product> replaceProductById(Long id, Product product) throws ProductNotFoundException;
 
-    public Product deleteProductById(Long id);
+    public ResponseEntity<Product> deleteProductById(Long id) throws ProductNotFoundException;
 
 }

@@ -1,10 +1,13 @@
 package org.scaler.productmicroservice.services;
 
 import org.scaler.productmicroservice.dto.FakeStoreProductDto;
+import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Category;
 import org.scaler.productmicroservice.models.Product;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpMessageConverterExtractor;
 import org.springframework.web.client.RequestCallback;
@@ -45,91 +48,93 @@ public class FakeStoreProductService implements ProductService{
         return dto;
     }
 
-
-
-
     @Override
-    public Product getProductById(Long id) {
+    public ResponseEntity<Product> getProductById(Long id) throws ProductNotFoundException {
         FakeStoreProductDto dto = restTemplate.getForObject("https://fakestoreapi.com/products/"+id, FakeStoreProductDto.class);
         if(dto == null){
-            return null;
+            //return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new ProductNotFoundException("No Product found with id "+id);
         }
-        return convertFakeStoreDtoToProduct(dto);
+        return new ResponseEntity<>(convertFakeStoreDtoToProduct(dto), HttpStatus.OK);
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public ResponseEntity<List<Product>> getAllProducts() {
         FakeStoreProductDto [] dtos = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
         if(dtos == null){
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         ArrayList<Product> products = new ArrayList<>();
         for(FakeStoreProductDto dto:dtos){
             Product product = convertFakeStoreDtoToProduct(dto);
             products.add(product);
         }
-        return products;
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @Override
-    public List<Product> getAllProductsInCategory(String category) {
+    public ResponseEntity<List<Product>> getAllProductsInCategory(String category) {
         FakeStoreProductDto [] dtos = restTemplate.getForObject("https://fakestoreapi.com/products/category/"+category, FakeStoreProductDto[].class);
         if(dtos == null){
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
         ArrayList<Product> products = new ArrayList<>();
         for(FakeStoreProductDto dto:dtos){
             Product product = convertFakeStoreDtoToProduct(dto);
             products.add(product);
         }
-        return products;
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @Override
-    public Product createNewProduct(Product product) {
+    public ResponseEntity<Product> createNewProduct(Product product) {
         FakeStoreProductDto dto = restTemplate.postForObject("https://fakestoreapi.com/products", convertProductToFakeStoreDto(product), FakeStoreProductDto.class);
         if(dto == null){
-            return null;
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        return convertFakeStoreDtoToProduct(dto);
+        return new ResponseEntity<>(convertFakeStoreDtoToProduct(dto), HttpStatus.OK);
     }
 
     @Override
-    public Product updateProductById(Long id, Product product) {
+    public ResponseEntity<Product> updateProductById(Long id, Product product) throws ProductNotFoundException{
         FakeStoreProductDto inputDto = convertProductToFakeStoreDto(product);
         inputDto.setId(id);
         RequestCallback requestCallback = restTemplate.httpEntityCallback(inputDto, FakeStoreProductDto.class);
         HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor = new HttpMessageConverterExtractor(FakeStoreProductDto.class, restTemplate.getMessageConverters());
         FakeStoreProductDto dto = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.PATCH, requestCallback, responseExtractor);
         if(dto == null){
-            return null;
+            //return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new ProductNotFoundException("No Product found with id "+id);
+
         }
-        return convertFakeStoreDtoToProduct(dto);
+        return new ResponseEntity<>(convertFakeStoreDtoToProduct(dto), HttpStatus.OK);
     }
 
     @Override
-    public Product replaceProductById(Long id, Product product) {
+    public ResponseEntity<Product> replaceProductById(Long id, Product product) throws ProductNotFoundException{
         FakeStoreProductDto inputDto = convertProductToFakeStoreDto(product);
         inputDto.setId(id);
         RequestCallback requestCallback = restTemplate.httpEntityCallback(inputDto, FakeStoreProductDto.class);
         HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor = new HttpMessageConverterExtractor(FakeStoreProductDto.class, restTemplate.getMessageConverters());
         FakeStoreProductDto dto = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.PUT, requestCallback, responseExtractor);
         if(dto == null){
-            return null;
+            //return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new ProductNotFoundException("No Product found with id "+id);
         }
-        return convertFakeStoreDtoToProduct(dto);
+        return new ResponseEntity<>(convertFakeStoreDtoToProduct(dto), HttpStatus.OK);
     }
 
     @Override
-    public Product deleteProductById(Long id) {
+    public ResponseEntity<Product> deleteProductById(Long id) throws ProductNotFoundException{
         FakeStoreProductDto inputDto = new FakeStoreProductDto();
         inputDto.setId(id);
         RequestCallback requestCallback = restTemplate.httpEntityCallback(inputDto, FakeStoreProductDto.class);
         HttpMessageConverterExtractor<FakeStoreProductDto> responseExtractor = new HttpMessageConverterExtractor(FakeStoreProductDto.class, restTemplate.getMessageConverters());
         FakeStoreProductDto dto = restTemplate.execute("https://fakestoreapi.com/products/"+id, HttpMethod.DELETE, requestCallback, responseExtractor);
         if(dto == null){
-            return null;
+            //return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            throw new ProductNotFoundException("No Product found with id "+id);
         }
-        return convertFakeStoreDtoToProduct(dto);
+        return new ResponseEntity<>(convertFakeStoreDtoToProduct(dto), HttpStatus.OK);
     }
 }
