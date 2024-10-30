@@ -1,6 +1,7 @@
 package org.scaler.productmicroservice.controllers;
 
 
+import org.scaler.productmicroservice.exceptions.CategoryNotFoundException;
 import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Product;
 import org.scaler.productmicroservice.services.FakeStoreProductService;
@@ -41,19 +42,19 @@ public class ProductController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Product> createNewProduct(@RequestBody Product product){
+    public ResponseEntity<Product> createNewProduct(@RequestBody Product product) throws CategoryNotFoundException {
         return productService.createNewProduct(product);
     }
 
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Product> updateProductById(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException{
+    public ResponseEntity<Product> updateProductById(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException, CategoryNotFoundException{
         return productService.updateProductById(id, product);
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> replaceProductById(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException{
+    public ResponseEntity<Product> replaceProductById(@PathVariable("id") Long id, @RequestBody Product product) throws ProductNotFoundException, CategoryNotFoundException{
         return productService.replaceProductById(id, product);
     }
 

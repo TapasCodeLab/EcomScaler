@@ -1,5 +1,6 @@
 package org.scaler.productmicroservice.services;
 
+import org.scaler.productmicroservice.exceptions.CategoryNotFoundException;
 import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Category;
 import org.scaler.productmicroservice.models.Product;
@@ -15,11 +16,11 @@ public interface ProductService {
 
     public ResponseEntity<List<Product>> getAllProductsInCategory(String category);
 
-    public ResponseEntity<Product> createNewProduct(Product product);
+    public ResponseEntity<Product> createNewProduct(Product product) throws CategoryNotFoundException;
 
-    public ResponseEntity<Product> updateProductById(Long id, Product product) throws ProductNotFoundException;
+    public ResponseEntity<Product> updateProductById(Long id, Product product) throws ProductNotFoundException,CategoryNotFoundException;
 
-    public ResponseEntity<Product> replaceProductById(Long id, Product product) throws ProductNotFoundException;
+    public ResponseEntity<Product> replaceProductById(Long id, Product product) throws ProductNotFoundException, CategoryNotFoundException;
 
     public ResponseEntity<Product> deleteProductById(Long id) throws ProductNotFoundException;
 

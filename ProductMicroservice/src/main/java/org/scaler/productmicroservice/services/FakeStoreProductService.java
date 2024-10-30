@@ -1,6 +1,7 @@
 package org.scaler.productmicroservice.services;
 
 import org.scaler.productmicroservice.dto.FakeStoreProductDto;
+import org.scaler.productmicroservice.exceptions.CategoryNotFoundException;
 import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Category;
 import org.scaler.productmicroservice.models.Product;
@@ -87,7 +88,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public ResponseEntity<Product> createNewProduct(Product product) {
+    public ResponseEntity<Product> createNewProduct(Product product) throws CategoryNotFoundException {
         FakeStoreProductDto dto = restTemplate.postForObject("https://fakestoreapi.com/products", convertProductToFakeStoreDto(product), FakeStoreProductDto.class);
         if(dto == null){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -96,7 +97,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public ResponseEntity<Product> updateProductById(Long id, Product product) throws ProductNotFoundException{
+    public ResponseEntity<Product> updateProductById(Long id, Product product) throws ProductNotFoundException, CategoryNotFoundException{
         FakeStoreProductDto inputDto = convertProductToFakeStoreDto(product);
         inputDto.setId(id);
         RequestCallback requestCallback = restTemplate.httpEntityCallback(inputDto, FakeStoreProductDto.class);
@@ -111,7 +112,7 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public ResponseEntity<Product> replaceProductById(Long id, Product product) throws ProductNotFoundException{
+    public ResponseEntity<Product> replaceProductById(Long id, Product product) throws ProductNotFoundException, CategoryNotFoundException{
         FakeStoreProductDto inputDto = convertProductToFakeStoreDto(product);
         inputDto.setId(id);
         RequestCallback requestCallback = restTemplate.httpEntityCallback(inputDto, FakeStoreProductDto.class);
