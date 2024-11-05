@@ -5,6 +5,7 @@ import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Getter
@@ -14,7 +15,6 @@ public class Token extends BaseModel{
     private String value;
     @ManyToOne
     private User user;
-    private Date expiryAt;
-
-
+    private LocalDateTime createdAt;
+    private LocalDateTime expiryAt;
 }

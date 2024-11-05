@@ -2,9 +2,11 @@ package org.scaler.usermicroservice.exceptionhandler;
 
 import org.scaler.usermicroservice.dtos.EmailAlreadyExistExceptionDto;
 import org.scaler.usermicroservice.dtos.IncorrectPasswordExceptionDto;
+import org.scaler.usermicroservice.dtos.TooManyActiveSessionExceptionDto;
 import org.scaler.usermicroservice.dtos.UserDoesNotExistExceptionDto;
 import org.scaler.usermicroservice.exceptions.EmailAlreadyExistsException;
 import org.scaler.usermicroservice.exceptions.IncorrectPasswordException;
+import org.scaler.usermicroservice.exceptions.TooManyActiveSessionException;
 import org.scaler.usermicroservice.exceptions.UserDoesNotExistException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,5 +37,11 @@ public class ExceptionHandlers {
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(TooManyActiveSessionException.class)
+    public ResponseEntity<TooManyActiveSessionExceptionDto> TooManyActiveSessionException(TooManyActiveSessionException exception){
+        TooManyActiveSessionExceptionDto dto = new TooManyActiveSessionExceptionDto();
+        dto.setMessage(exception.getMessage());
+        return new ResponseEntity<>(dto, HttpStatus.TOO_MANY_REQUESTS);
+    }
 
 }
