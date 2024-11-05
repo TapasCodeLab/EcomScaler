@@ -6,6 +6,8 @@ import org.scaler.usermicroservice.dtos.LogoutRequestDto;
 import org.scaler.usermicroservice.dtos.SignupDto;
 import org.scaler.usermicroservice.dtos.UserDto;
 import org.scaler.usermicroservice.exceptions.EmailAlreadyExistsException;
+import org.scaler.usermicroservice.exceptions.IncorrectPasswordException;
+import org.scaler.usermicroservice.exceptions.UserDoesNotExistException;
 import org.scaler.usermicroservice.models.Token;
 
 import org.scaler.usermicroservice.services.UserService;
@@ -32,8 +34,8 @@ public class UserController {
 
 
     @PostMapping("/login")
-    public Token login(@RequestBody LoginDto loginDto){
-        return userService.login(loginDto);
+    public ResponseEntity<Token> login(@RequestBody LoginDto loginDto) throws UserDoesNotExistException, IncorrectPasswordException {
+        return userService.login(loginDto.getEmail(), loginDto.getPassword());
     }
 
     @PostMapping("/logout")
