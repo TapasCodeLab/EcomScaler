@@ -2,10 +2,7 @@ package org.scaler.usermicroservice.controllers;
 
 
 import org.scaler.usermicroservice.dtos.*;
-import org.scaler.usermicroservice.exceptions.EmailAlreadyExistsException;
-import org.scaler.usermicroservice.exceptions.IncorrectPasswordException;
-import org.scaler.usermicroservice.exceptions.TooManyActiveSessionException;
-import org.scaler.usermicroservice.exceptions.UserDoesNotExistException;
+import org.scaler.usermicroservice.exceptions.*;
 import org.scaler.usermicroservice.models.Token;
 
 import org.scaler.usermicroservice.services.UserService;
@@ -43,9 +40,9 @@ public class UserController {
         return userService.logout(logoutRequestDto.getToken());
     }
 
-    @PostMapping("/validate")
-    public ResponseEntity<UserDto> validate(@RequestBody TokenDto tokenDto){
-        return userService.validate(tokenDto.getValue());
+    @GetMapping("/validate/{token}")
+    public ResponseEntity<UserDto> validate(@PathVariable("token") String token) throws InvalidTokenException {
+        return userService.validate(token);
     }
 
 

@@ -1,10 +1,7 @@
 package org.scaler.usermicroservice.services;
 
 import org.scaler.usermicroservice.dtos.*;
-import org.scaler.usermicroservice.exceptions.EmailAlreadyExistsException;
-import org.scaler.usermicroservice.exceptions.IncorrectPasswordException;
-import org.scaler.usermicroservice.exceptions.TooManyActiveSessionException;
-import org.scaler.usermicroservice.exceptions.UserDoesNotExistException;
+import org.scaler.usermicroservice.exceptions.*;
 import org.scaler.usermicroservice.models.Token;
 import org.scaler.usermicroservice.models.User;
 import org.springframework.http.ResponseEntity;
@@ -19,5 +16,5 @@ public interface UserService {
     public ResponseEntity<TokenDto> login(String email, String password) throws UserDoesNotExistException, IncorrectPasswordException, TooManyActiveSessionException;
 
     public ResponseEntity<String> logout(String token_value);
-    public ResponseEntity<UserDto> validate(String token);
+    public ResponseEntity<UserDto> validate(String token) throws InvalidTokenException;
 }

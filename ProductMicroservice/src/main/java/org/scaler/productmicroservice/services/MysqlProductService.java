@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +62,10 @@ public class MysqlProductService implements ProductService{
                 product.setCategory(savedcategory.get());
             }
         }
+        Date currentDateTime = new Date();
+        product.setCreatedAt(currentDateTime);
         Product savedProduct = productRepository.save(product);
+
         return new ResponseEntity<>(savedProduct, HttpStatus.OK);
     }
 

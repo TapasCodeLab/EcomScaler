@@ -1,13 +1,7 @@
 package org.scaler.usermicroservice.exceptionhandler;
 
-import org.scaler.usermicroservice.dtos.EmailAlreadyExistExceptionDto;
-import org.scaler.usermicroservice.dtos.IncorrectPasswordExceptionDto;
-import org.scaler.usermicroservice.dtos.TooManyActiveSessionExceptionDto;
-import org.scaler.usermicroservice.dtos.UserDoesNotExistExceptionDto;
-import org.scaler.usermicroservice.exceptions.EmailAlreadyExistsException;
-import org.scaler.usermicroservice.exceptions.IncorrectPasswordException;
-import org.scaler.usermicroservice.exceptions.TooManyActiveSessionException;
-import org.scaler.usermicroservice.exceptions.UserDoesNotExistException;
+import org.scaler.usermicroservice.dtos.*;
+import org.scaler.usermicroservice.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -42,6 +36,13 @@ public class ExceptionHandlers {
         TooManyActiveSessionExceptionDto dto = new TooManyActiveSessionExceptionDto();
         dto.setMessage(exception.getMessage());
         return new ResponseEntity<>(dto, HttpStatus.TOO_MANY_REQUESTS);
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<InvalidTokenExceptionDto> InvalidTokenException(InvalidTokenException exception){
+        InvalidTokenExceptionDto dto = new InvalidTokenExceptionDto();
+        dto.setMessage(exception.getMessage());
+        return new ResponseEntity<>(dto, HttpStatus.FORBIDDEN);
     }
 
 }

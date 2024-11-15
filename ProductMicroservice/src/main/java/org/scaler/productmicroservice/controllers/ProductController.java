@@ -1,6 +1,8 @@
 package org.scaler.productmicroservice.controllers;
 
 
+import org.scaler.productmicroservice.commons.AuthCommons;
+import org.scaler.productmicroservice.dto.UserDto;
 import org.scaler.productmicroservice.exceptions.CategoryNotFoundException;
 import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Product;
@@ -19,16 +21,25 @@ import java.util.List;
 public class ProductController {
 
     private ProductService productService;
+    private AuthCommons authCommons;
 
     @Autowired
-    ProductController(ProductService productService){
+    ProductController(ProductService productService, AuthCommons authCommons){
         this.productService = productService;
+        this.authCommons = authCommons;
     }
 
 
     @RequestMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
-        return productService.getProductById(id);
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id, @RequestHeader("authToken") String token) throws ProductNotFoundException {
+        UserDto userDto = authCommons.validateToken(token);
+        if(userDto==null){
+            //Raise exception
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }else{
+            return productService.getProductById(id);
+        }
+
     }
 
     @RequestMapping("/")

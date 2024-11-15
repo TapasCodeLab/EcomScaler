@@ -1,10 +1,7 @@
 package org.scaler.usermicroservice.services;
 
 import org.scaler.usermicroservice.dtos.*;
-import org.scaler.usermicroservice.exceptions.EmailAlreadyExistsException;
-import org.scaler.usermicroservice.exceptions.IncorrectPasswordException;
-import org.scaler.usermicroservice.exceptions.TooManyActiveSessionException;
-import org.scaler.usermicroservice.exceptions.UserDoesNotExistException;
+import org.scaler.usermicroservice.exceptions.*;
 import org.scaler.usermicroservice.models.Role;
 import org.scaler.usermicroservice.models.Token;
 import org.scaler.usermicroservice.models.User;
@@ -108,10 +105,10 @@ public class MySqlUserService implements UserService{
         }
     }
 
-    public ResponseEntity<UserDto> validate(String token){
+    public ResponseEntity<UserDto> validate(String token) throws InvalidTokenException {
         Optional<Token> savedToken = tokenRepository.findTokenByValueAndDeletedAndExpiryAtAfter(token, false, LocalDateTime.now());
         if(savedToken.isEmpty()){
-            return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+            throw new InvalidTokenException("Incorrect token provided");
         } else {
             User newUser = savedToken.get().getUser();
             UserDto userDto = new UserDto();
