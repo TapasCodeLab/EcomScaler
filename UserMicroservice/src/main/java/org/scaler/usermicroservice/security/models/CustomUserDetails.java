@@ -2,6 +2,7 @@ package org.scaler.usermicroservice.security.models;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.scaler.usermicroservice.models.Role;
 import org.scaler.usermicroservice.models.User;
@@ -14,6 +15,7 @@ import java.util.List;
 
 
 //This CustomUserDetails class will act like a User Class for Spring Security
+//@NoArgsConstructor
 @JsonDeserialize
 @Getter
 @Setter
@@ -26,6 +28,7 @@ public class CustomUserDetails implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
     private List<CustomGrantedAuthority> authorities;
+    private Long userId;
 
     public CustomUserDetails(){}
 
@@ -41,6 +44,7 @@ public class CustomUserDetails implements UserDetails {
         for(Role role: user.getRoles()){
             authorities.add(new CustomGrantedAuthority(role));
         }
+        this.userId = user.getId();
 
     }
 
@@ -79,4 +83,6 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+    public Long getUserId(){ return userId;}  //it is there from Lombork
 }
