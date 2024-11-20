@@ -29,6 +29,7 @@ public class CustomUserDetails implements UserDetails {
     private boolean enabled;
     private List<CustomGrantedAuthority> authorities;
     private Long userId;
+    private String name;
 
     public CustomUserDetails(){}
 
@@ -45,7 +46,7 @@ public class CustomUserDetails implements UserDetails {
             authorities.add(new CustomGrantedAuthority(role));
         }
         this.userId = user.getId();
-
+        this.name = user.getName();
     }
 
 
@@ -84,5 +85,5 @@ public class CustomUserDetails implements UserDetails {
         return enabled;
     }
 
-    public Long getUserId(){ return userId;}  //it is there from Lombork
+    //public Long getUserId(){ return userId;}  //it is there from Lombork
 }

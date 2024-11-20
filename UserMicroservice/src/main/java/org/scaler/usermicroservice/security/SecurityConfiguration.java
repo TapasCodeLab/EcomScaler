@@ -169,15 +169,10 @@ public class SecurityConfiguration {
                             .map(c -> c.replaceFirst("^ROLE_", ""))
                             .collect(Collectors.collectingAndThen(Collectors.toSet(), Collections::unmodifiableSet));
                     claims.put("roles", roles);
-                    System.out.println("-----------------------XXXXXXXXXXXXXXXXXXXXXXX---------------");
-                    CustomUserDetails o = (CustomUserDetails) context.getPrincipal().getPrincipal();
-                    System.out.println(o.toString());
-                    System.out.println(o.getClass());
-
-                    System.out.println("-----------------------XXXXXXXXXXXXXXXXXXXXXXX---------------");
-                    Long userId = o.getUserId();
-
+                    Long userId = ((CustomUserDetails) context.getPrincipal().getPrincipal()).getUserId();
+                    String name = ((CustomUserDetails) context.getPrincipal().getPrincipal()).getName();
                     claims.put("userId", userId);
+                    claims.put("Name", name);
                 });
             }
         };
