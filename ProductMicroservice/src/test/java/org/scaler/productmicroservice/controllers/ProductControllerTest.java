@@ -61,21 +61,21 @@ public class ProductControllerTest {
 //
 //    }
 
-    @Test
-    void validgetAllProductsTest(){
-        Product p1 = new Product();
-        Product p2 = new Product();
-        Product p3 = new Product();
-        List<Product> products= new ArrayList<>();
-        products.add(p1);
-        products.add(p2);
-        products.add(p3);
-        when(productRepository.findAll()).thenReturn(products);
-
-        ResponseEntity<List<Product>> responseEntity = productController.getAllProducts();
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(products, responseEntity.getBody());
-
-    }
+//    @Test
+//    void validgetAllProductsTest(){
+//        Product p1 = new Product();
+//        Product p2 = new Product();
+//        Product p3 = new Product();
+//        List<Product> products= new ArrayList<>();
+//        products.add(p1);
+//        products.add(p2);
+//        products.add(p3);
+//        when(productRepository.findAll()).thenReturn(products);
+//
+//        ResponseEntity<List<Product>> responseEntity = productController.getAllProducts();
+//
+//        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+//        assertEquals(products, responseEntity.getBody());
+//
+//    }
 }

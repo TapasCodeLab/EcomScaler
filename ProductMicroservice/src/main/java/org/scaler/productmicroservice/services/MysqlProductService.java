@@ -7,6 +7,9 @@ import org.scaler.productmicroservice.models.Product;
 import org.scaler.productmicroservice.repositories.CategoryRepository;
 import org.scaler.productmicroservice.repositories.ProductRepository;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -36,9 +39,17 @@ public class MysqlProductService implements ProductService{
         return new ResponseEntity<>(product.get(), HttpStatus.OK);
     }
 
+//    @Override
+//    public ResponseEntity<List<Product>> getAllProducts() {
+//        List<Product> products = productRepository.findAll();
+//        return new ResponseEntity<>(products, HttpStatus.OK);
+//    }
+
     @Override
-    public ResponseEntity<List<Product>> getAllProducts() {
-        List<Product> products = productRepository.findAll();
+    public ResponseEntity<Page<Product>> getAllProducts(int pageNumber, int pageSize, String sortBy) {
+        Page<Product> products = productRepository.findAll(PageRequest.of(pageNumber, pageSize,
+                //Sort.by("price").descending().and(Sort.by("id").ascending())));
+                Sort.by(sortBy).descending()));
         return new ResponseEntity<>(products, HttpStatus.OK);
     }
 

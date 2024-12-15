@@ -9,6 +9,7 @@ import org.scaler.productmicroservice.models.Product;
 import org.scaler.productmicroservice.services.FakeStoreProductService;
 import org.scaler.productmicroservice.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,21 +32,22 @@ public class ProductController {
 
 
     @RequestMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id, @RequestHeader("authToken") String token) throws ProductNotFoundException {
-        UserDto userDto = authCommons.validateToken(token);
-        if(userDto==null){
-            //Raise exception
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }else{
-            return productService.getProductById(id);
-        }
-
+    public ResponseEntity<Product> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
+//        UserDto userDto = authCommons.validateToken(token);
+//        if(userDto==null){
+//            //Raise exception
+//            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+//        }else{
+//            return productService.getProductById(id);
+//        }
+        return productService.getProductById(id);
     }
 
     @RequestMapping("/")
-    public ResponseEntity<List<Product>> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<Page<Product>> getAllProducts(@RequestParam("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize, @RequestParam("sortBy") String sortBy){
+        return productService.getAllProducts(pageNumber, pageSize, sortBy);
     }
+    //localhost:8080/products/?pageNumber=0&pageSize=5&sortBy=id
 
     @RequestMapping("/category/{name}")
     public ResponseEntity<List<Product>> getAllProductsInCategory(@PathVariable("name") String name){

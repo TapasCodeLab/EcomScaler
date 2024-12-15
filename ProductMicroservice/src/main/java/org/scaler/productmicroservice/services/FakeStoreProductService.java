@@ -6,6 +6,7 @@ import org.scaler.productmicroservice.exceptions.ProductNotFoundException;
 import org.scaler.productmicroservice.models.Category;
 import org.scaler.productmicroservice.models.Product;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,17 +61,18 @@ public class FakeStoreProductService implements ProductService{
     }
 
     @Override
-    public ResponseEntity<List<Product>> getAllProducts() {
-        FakeStoreProductDto [] dtos = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
-        if(dtos == null){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        ArrayList<Product> products = new ArrayList<>();
-        for(FakeStoreProductDto dto:dtos){
-            Product product = convertFakeStoreDtoToProduct(dto);
-            products.add(product);
-        }
-        return new ResponseEntity<>(products, HttpStatus.OK);
+    public ResponseEntity<Page<Product>> getAllProducts(int pageNumber, int pageSize, String sortBy) {
+//        FakeStoreProductDto [] dtos = restTemplate.getForObject("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+//        if(dtos == null){
+//            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
+//        ArrayList<Product> products = new ArrayList<>();
+//        for(FakeStoreProductDto dto:dtos){
+//            Product product = convertFakeStoreDtoToProduct(dto);
+//            products.add(product);
+//        }
+//        return new ResponseEntity<>(products, HttpStatus.OK);
+        return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
     @Override
