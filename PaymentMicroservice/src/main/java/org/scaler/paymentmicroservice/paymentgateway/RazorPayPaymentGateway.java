@@ -24,7 +24,6 @@ public class RazorPayPaymentGateway implements PaymentGateway{
     @Override
     public String generatePaymentLink(Long orderId, Long amount) throws RazorpayException {
         //Make a call to RazorPay Payment Gateway to generate this payment link
-        //RazorpayClient razorpay = new RazorpayClient("rzp_test_QKMc862gNrpfFB", "8cTg8SYDwoAMZzZCbNK65zG0");
         JSONObject paymentLinkRequest = new JSONObject();
         paymentLinkRequest.put("amount",amount);
         paymentLinkRequest.put("currency","INR");
