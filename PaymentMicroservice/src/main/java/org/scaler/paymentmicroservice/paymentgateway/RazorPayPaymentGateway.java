@@ -29,7 +29,6 @@ public class RazorPayPaymentGateway implements PaymentGateway{
         paymentLinkRequest.put("currency","INR");
 //        paymentLinkRequest.put("accept_partial",true);
 //        paymentLinkRequest.put("first_min_partial_amount",100);
-
         LocalDateTime currentDateTime = LocalDateTime.now();
         LocalDateTime TweentyMinsFromNow = currentDateTime.plusMinutes(20L);
         Long epocSeconds = TweentyMinsFromNow.toEpochSecond(ZoneOffset.UTC);
